@@ -1,0 +1,150 @@
+{% extends '::base.html.twig' %}
+
+{% form_theme form 'OrangeMainBundle:FormTheme:fieldsFiltre.html.twig' %}
+
+{% block content -%}
+{# inbdexgfbv #}
+<!-- heading -->
+<div class="heading">
+	<h3>{% block page_title %} Liste de mes actions {% endblock %}</h3>                    
+</div>
+<!-- End .heading-->
+<div class="row">
+   <div class="col-lg-12">
+    	<div class="row">
+			<div class="col-lg-8">
+				 <a href="{{ path('export_action') }}"><button class="btn btn-success"><span class="icon16 entypo-icon-export white"></span>Exporter les actions</button></a>
+				 <div class="marginB10"></div>
+			</div><!-- End .span4 -->
+		</div>
+    	<div class="panel panel-default">
+	        <div class="panel-heading">
+				<h4> 
+					<span class="icon16 icomoon-icon-filter-2"></span>
+					<span>Filtrer les actions </span>
+				</h4>
+				<a href="#minimize" class="maximize" style="display: inline;">Minimize</a>
+	        </div>
+	        <div class="panel-body" style="display: none;">
+		        <form novalidate="novalidate" class="form-horizontal" action="{{ path('mes_actions') }}" method="post">
+					<div class="form-group">
+						{{ form_widget(form.domaine,  {'attr': {'class': 'select form-control', 'style' : 'width: 100%'}})}}
+						{{ form_widget(form.typeAction,  {'attr': {'class': 'select form-control', 'style' : 'width: 100%'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_widget(form.instance,  {'attr': {'class': 'select form-control', 'style' : 'width: 100%'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_widget(form.priorite,  {'attr': {'class': 'select form-control', 'style' : 'width: 100%'}}) }}
+						{{ form_widget(form.statut,  {'attr': {'class': 'select form-control', 'style' : 'width: 100%'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_widget(form.fromDebut) }}
+						{{ form_widget(form.toDebut) }}
+					</div>
+					<div class="form-group">
+						{{ form_widget(form.fromInitial) }}
+						{{ form_widget(form.toInitial) }}
+					</div>
+					<div class="form-group">
+						{{ form_widget(form.fromCloture) }}
+						{{ form_widget(form.toCloture) }}
+					</div>
+	                	{{ form_widget(form._token) }}
+			        <div class="form-group">
+			        	<div class="col-lg-offset-2 col-lg-9">
+							{{ form_widget(form.filtrer) }}
+						</div>
+					</div><!-- End .form-group  -->  
+				</form>
+	        </div>
+        </div>
+    </div><!-- End .span12 -->
+</div><!-- End .row -->
+					
+<div class="row">
+	<div class="col-lg-12">
+	    <div class="panel panel-default gradient">
+			<div class="panel-heading">
+				<h4>
+				   	<span class="icon16 brocco-icon-grid"></span>
+				    <span>Liste de mes Actions</span>
+				    <form class="panel-form right"  id="section_repo">
+                         <a id="valider" href="#myModal" modal-url="#" data-target="#myModal" data-toggle="modal" class="btn btn-danger btn-sm actionLink">Orienter vers une action générique</a>
+                    </form>
+				    <div style="float: right"><a href="#" title="filtrer"><span class="icon16  icomoon-icon-filter"></span></a></div>
+				</h4>
+				
+			</div>
+			<div class="panel-body noPad clearfix">
+			    <table id="actionTable" cellpadding="0" cellspacing="0" border="0" class="checkAll display table table-bordered" width="100%">
+			        <thead>
+			            <tr>
+			               <th id="masterCh" class="ch"><input type="checkbox" name="checkbox" value="all" class="styled" style="opacity: 0;"></th>
+			               <th>Priorité</th>
+						   <th width="60px">Référence</th>
+			               <th width="200px">Instance</th>
+			               <th>Action</th>
+						   <th width="200px">Porteur</th>
+						   <th width="100px">Statut</th>
+						   <th width="160px">Actions</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	<tr>
+			        		<td colspan="8">Chargement des donnees ...</td>
+			        	</tr>
+			        </tbody>
+			    </table>
+			</div>
+		</div><!-- End .panel -->
+	</div><!-- End .span12 -->
+</div><!-- End .row --> 
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('a[href="#maximize"]').click();
+		$("a#valider").attr('disabled','disabled');
+		$("a#valider").attr('modal-url', '');
+
+		$("#masterCh").click(function() {
+			var checkedStatus = $(this).find('span').hasClass('checked');
+			$("#actionTable tr .chChildren input:checkbox").each(function() {
+				this.checked = checkedStatus;
+					if (checkedStatus == this.checked) {
+						$(this).closest('.checker > span').removeClass('checked');
+					}
+					if (this.checked) {
+						$(this).closest('.checker > span').addClass('checked');
+					}
+			});
+		});
+		
+		$('#actionTable input[type=checkbox]').live('click', function(){
+			var nb = 0;  
+			var myArr=[];
+			 $('#actionTable input[type=checkbox].chkbox:checked').each(function(){
+				   myArr.push($(this).val());
+			       nb++;
+			  }); 
+			  if(nb>0){
+				  $("a#valider").removeClass('disable');
+				  var url = "{{ path("orienter_action", {"data" : "data"}) }}"; 
+				  toStr = myArr.toString();
+				  url = url.replace("data", toStr);
+				  $("a#valider").removeAttr('disabled','');
+				  $("a#valider").attr('modal-url', url);
+			  }else{
+				  $("a#valider").attr('modal-url', '');
+				  $("a#valider").attr('disabled','disabled');
+			  }
+		 });
+	});
+</script>
+{% endblock %}
+
+{% block pagescript %}
+	{{ parent() }}
+	{{ block_render('::form_div_layout.html.twig','datatable_options',{with_tag: 1, checkbox: 1}) }}
+	{% include 'OrangeQuickMakingBundle:Extra:datatable.html.twig' with {idTable: 'actionTable', url: path('liste_de_mes_actions'), nosorting: [0, 1, 4, 5, 7] } %}
+{% endblock %}

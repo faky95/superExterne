@@ -1,0 +1,46 @@
+{% extends '::base.html.twig' %}
+
+{% block content -%}
+    <!-- Build page from here: -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default gradient invoice">
+                <div class="panel-heading clearfix">
+                    <h4 class="left">
+                        <span>Détails du chantier</span>
+                    </h4>
+                    <div class="print">
+                        <a href="{{ path('edition_chantier', {'id':entity.id}) }}" class="tip" title="Modifier le chantier"><span class="icon24 icomoon-icon-pencil-3"></span></a>
+                    </div>
+                </div>
+                <div class="panel-body row" style="margin-left:0; margin-right:0;">
+                    <div class="you col-lg-6 col-md-6 col-sm-6" >
+                        <ul class="list-unstyled">
+                            <li><span class="icon16 icomoon-icon-arrow-right-3"></span>Libelle: <strong class="red">{{ entity.libelle }}</strong></li>
+                            <li><span class="icon16 icomoon-icon-arrow-right-3"></span>Projet: <strong class="red">{{ entity.projet }}</strong></li>
+                            <li><span class="icon16 icomoon-icon-arrow-right-3"></span>Instancet: <strong class="red">{{ entity.instance }}</strong></li>
+                            <li><span class="icon16 icomoon-icon-arrow-right-3"></span>Date: <strong class="red">{{ entity.dateCreation|date("d/m/Y")  }}</strong></li>
+                        </ul>
+                    </div>
+                    <div class="client col-lg-6 col-md-6 col-sm-6">
+                        <ul class="list-unstyled">
+                            <li><h3 class="red">Description</h3>
+                            <p style="text-align: justify;">{{ entity.description }}</p></li>
+                        </ul>
+                    </div>
+                    <div class="client col-lg-6 col-md-6 col-sm-6">
+                        <ul class="list-unstyled">
+                            <li><h3 class="red">Chef de chantier</h3>
+                            <p style="text-align: justify;">{% for membre in entity.chefChantier %}{{ membre }}{% if loop.index!=loop.last %}, {% endif %}{% endfor %}</p></li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- End .panel -->
+        </div>
+    </div><!-- End .row -->
+{% endblock %}
+
+{% block pagescript %}
+	{% include 'OrangeMainBundle:ModalScript:confirm.html.twig' %}
+{% endblock %}
+		 	
