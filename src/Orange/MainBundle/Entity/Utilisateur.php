@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="Orange\MainBundle\Repository\UtilisateurRepository")
- * @UniqueEntity("matricule")
  */
 class Utilisateur extends BaseUser
 {

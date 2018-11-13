@@ -22,7 +22,6 @@ class AppKernel extends Kernel
         	new AppVentus\AlertifyBundle\AvAlertifyBundle(),
         	new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
         	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-        	new FR3D\LdapBundle\FR3DLdapBundle(),
         	new FOS\RestBundle\FOSRestBundle(),
         	new JMS\SerializerBundle\JMSSerializerBundle(),
         	new Nelmio\ApiDocBundle\NelmioApiDocBundle(),

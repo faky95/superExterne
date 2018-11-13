@@ -211,7 +211,7 @@ services:
         
     app.exception_controller:
         class: Orange\MainBundle\Controller\ExceptionController
-        arguments: ["@twig", "%kernel.debug%", "@orange.main.mailer", "@swiftmailer.transport.real"]
+        arguments: ["@twig", "%kernel.debug%", "@orange.main.mailer", "@swiftmailer.transport.real", "@security.context", ]
         
     orange_main.action_manager:
         class: Orange\MainBundle\Model\ActionManager

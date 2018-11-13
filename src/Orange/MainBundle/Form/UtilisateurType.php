@@ -18,7 +18,10 @@ class UtilisateurType extends BaseType {
             ->add('matricule', null, array('label'=> 'Matricule : '))
             ->add('telephone', null, array('label'=> 'Telephone :'))
             ->add('manager', null, array('label'=> 'Est Manager? :'))
-            ->add('structure', null, array('label'=> 'Structure :'))
+            ->add('structure', null, array('label'=> 'Structure :', 'query_builder' => function($er) {
+	            	return $er->filter();
+	            }, 'empty_value' => 'Choisir une structure ...'
+            ))
             ->add('isAdmin', null, array('label'=> 'Est Admin? :'))
             ->add('canCreateActionGenerique', 'checkbox', array('label' => 'Peut créer des actions génériques ?'))
             ->add('add', 'submit', array('label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-warning')))

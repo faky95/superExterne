@@ -844,4 +844,8 @@ class Structure
     {
         return $this->action;
     }
+    
+    public function getFullLabel() {
+    	return $this->buPrincipal->getLibelle().' : '.$this->__toString();
+    }
 }

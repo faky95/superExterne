@@ -121,18 +121,6 @@ monolog:
             action_level:   info
             channels:       ["trace"]
             formatter:      orange.quickmaking_formatter
-
-#fr3d_ldap
-fr3d_ldap:
-    driver:
-        host:     10.100.55.80
-        port:     389
-        accountDomainName: orange-sonatel.com
-    user:
-        baseDn: dc=orange-sonatel, dc=com
-        filter: (objectclass=user)
-        attributes:         
-           - { ldap_attr: samaccountname,  user_method: setUsername }
            
 # Swiftmailer Configuration
 swiftmailer:

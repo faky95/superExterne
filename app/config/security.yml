@@ -20,9 +20,6 @@ security:
                 
         fos_userbundle:
             id: fos_user.user_provider.username
-            
-        fr3d_ldapbundle:
-            id: fr3d_ldap.security.user.provider
 
 
     # the main part of the security, where you can set up firewalls
@@ -35,7 +32,6 @@ security:
             
         main:
             pattern: /.*
-            fr3d_ldap:  ~
             anonymous: ~
             form_login:
                 #provider: fos_userbundle
@@ -76,6 +72,7 @@ security:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/account/register/confirm, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: ROLE_USER }
         
     role_hierarchy:

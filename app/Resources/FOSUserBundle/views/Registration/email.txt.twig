@@ -10,8 +10,12 @@ Création d'un utilisateur
 <div style="font-size: 14px">
 Bonjour {{ user.prenom ~ ' ' ~ user.nom }}<br>
 Vous avez été ajouté à l'application <strong>SUPER</strong><br><br>
-Vous pouvez vous connecter avec votre compte windows.
-Vous pouvez accédez a l'application à partir d' <a href={{ confirmationUrl }}>ici</a><br><br>
+Vous pouvez vous connecter avec les paramètres ci-dessous:
+<ul>
+	<li>Nom d'utilisateur : {{ user.username }}</li>
+	<li>Mot de passe : {{ user.plainPassword }}</li>
+</ul>
+et d'activer votre compte en cliquant <a href={{ confirmationUrl }}>ici</a><br><br>
 Cordialement,
 </div>
 {% endblock %}

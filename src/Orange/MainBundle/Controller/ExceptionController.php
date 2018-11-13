@@ -7,6 +7,9 @@ use Symfony\Component\HttpKernel\Exception\FlattenException;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Debug\Debug;
+use Orange\MainBundle\Service\Mailer;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class ExceptionController extends Controller {
 	
@@ -16,16 +19,29 @@ class ExceptionController extends Controller {
 	protected $mailer;
 	
 	/**
+	 * @var \Orange\MainBundle\Entity\Utilisateur
+	 */
+	protected $user;
+	
+	/**
 	 * @var \Swift_Transport
 	 */
 	protected $transport;
 	
-	public function __construct(\Twig_Environment $twig, $debug, $mailer, $transport)
+	/**
+	 * @param \Twig_Environment $twig
+	 * @param \Symfony\Component\Debug\Debug $debug
+	 * @param \Orange\MainBundle\Service\Mailer $mailer
+	 * @param \Swift_Transport $transport
+	 * @param \Symfony\Component\Security\Core\SecurityContext $securityContext
+	 */
+	public function __construct(\Twig_Environment $twig, $debug, $mailer, $transport, $securityContext)
 	{
 		$this->twig = $twig;
 		$this->debug = $debug;
 		$this->mailer = $mailer;
 		$this->transport = $transport;
+		$this->user = $securityContext->getToken() ? $securityContext->getToken()->getUser() : null;
 	}
 
 	/**
@@ -44,7 +60,7 @@ class ExceptionController extends Controller {
 		$currentContent = $this->getAndCleanOutputBuffering($request->headers->get('X-Php-Ob-Level', -1));
 		$showException = $request->attributes->get('showException', $this->debug); // As opposed to an additional parameter, this maintains BC
 		$code = $exception->getStatusCode();
-		if($showException==false && $code!=404) {
+		if($showException==false && $code!=404 && $this->user) {
 			//contact admin
  			$to = array("mamekhady.diouf@orange-sonatel.com", "madiagne.sylla@orange-sonatel.com");
  			$cc = array();
