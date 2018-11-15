@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% form_theme form 'OrangeMainBundle:FormTheme:fields.html.twig' %}
+{% form_theme edit_form 'OrangeMainBundle:FormTheme:fields.html.twig' %}
 
 {% block content -%}
 <!-- heading -->
@@ -19,24 +19,24 @@
 			<div class="panel-body">
 				<form novalidate="novalidate" class="form-horizontal" action="{{ path('modifier_type_action', {'id':entity.id})}}" method="post" role="form">
 					<div class="form-group">
-						{{ form_widget(form.type,  {'attr': {'class': 'nostyle form-control'}}) }}
-						{% if is_granted('ROLE_SUPER_ADMIN') and espace_id is not defined and espace_id is empty %}
-						{{ form_widget(form.bu,  {'attr': {'class': 'nostyle form-control'}}) }}
+						{{ form_widget(edit_form.type,  {'attr': {'class': 'nostyle form-control'}}) }}
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+						{{ form_widget(edit_form.bu,  {'attr': {'class': 'nostyle form-control'}}) }}
 						{% endif %}
 					</div>
 					<div class="form-group">
 							<label class="col-lg-3 control-label" for="picker">Couleur :</label>
 							<div class="col-lg-9">
-								<input type="text" id="color" name="{{ form.couleur.vars.full_name }}" value="#123456" class="form-control" />
+								<input type="text" id="color" name="{{ edit_form.couleur.vars.full_name }}" value="#123456" class="form-control" />
 								<div class="picker"></div>
 							</div>
 					</div>
-						{{ form_widget(form._token) }}
+						{{ form_widget(edit_form._token) }}
 						<!-- End .form-group  -->
 					 <div class="form-group">
 						<div class="col-lg-offset-2 col-lg-9">
-						     {{ form_widget(form.add) }}
-						     {{ form_widget(form.cancel, {attr: {class: 'btn btn-die'}}) }}
+						     {{ form_widget(edit_form.add) }}
+						     {{ form_widget(edit_form.cancel, {attr: {class: 'btn btn-die'}}) }}
 						</div>
 					</div><!-- End .form-group  -->  
 				</form>

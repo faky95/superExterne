@@ -12,7 +12,7 @@ class DocumentType extends AbstractType
 	 * @param array $options
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder->add('file', 'file', array('label' => 'ERQ :'));
+		$builder->add('file', 'file', array('label' => 'Document :'));
 	}
     
     /**

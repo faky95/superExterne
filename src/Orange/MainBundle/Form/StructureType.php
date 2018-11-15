@@ -24,8 +24,7 @@ class StructureType extends AbstractType
         		))
         		->add('typeStructure', null, array('label' => 'Type de la structure', 'empty_value' => 'Choisir le type de structure', 'attr' => array('class' => 'select')))
 				->add('buPrincipal', null, array('label' => 'BU principal', 'empty_value' => 'Choisir le BU principal', 'attr' => array('class' => 'select')))
-	            ->add('bu', null, array('label' => 'Choisir les BU associes :', 'empty_value' => 'les bu associés : ', 'by_reference' => false, 'attr' => array('class' => 'select2')
-	            ))->add('rapporteurs', null, array_merge(array('label'=>'Choisir les rapporteurs :', 'empty_value' => '--- Choix Rapporteurs ---',
+	            ->add('rapporteurs', null, array_merge(array('label'=>'Choisir les rapporteurs :', 'empty_value' => '--- Choix Rapporteurs ---',
             		'query_builder' => function($er) use ($bu) {
             				$queryBuilder = $er->createQueryBuilder('u');
 							return $queryBuilder->innerJoin('u.structure','st')->where('st.buPrincipal= :bu')->setParameter('bu', $bu);

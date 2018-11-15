@@ -161,11 +161,21 @@ class TypeActionController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('OrangeMainBundle:TypeAction')->find($id);
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find TypeAction entity.');
-        }
+         if (!$entity)
+            {
+                throw $this->createNotFoundException('Unable to find TypeAction entity.');
+            }
         $editForm = $this->createEditForm($entity);
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+        	$editForm->handleRequest($request);
+        	if ($editForm->isValid()) {
+        		$em->persist($entity);
+        		$em->flush();
+        	}
+        }
         return array('entity' => $entity, 'edit_form' => $editForm->createView());
+      
     }
 
     /**
@@ -201,8 +211,7 @@ class TypeActionController extends BaseController
         		$em->persist($entity);
         		$em->flush();
         		$this->get('session')->getFlashBag()->add('success', array('title' => 'Notification', 'body' =>  "Le type d'action a été modifié avec succès"));
-        		return new JsonResponse(array('url' => $this->generateUrl('les_types_action')));
-        	}
+                return $this->redirect($this->generateUrl('les_types_action'));        	}
         }
         return $this->render('OrangeMainBundle:TypeAction:edit.html.twig', array(
         				'entity' => $entity, 'edit_form' => $form->createView()

@@ -379,6 +379,9 @@ class Utilisateur extends BaseUser
     public function setIsAdmin($isAdmin)
     {
         $this->isAdmin = $isAdmin;
+        if($isAdmin==1){
+            $this->addRole('ROLE_ADMIN');
+        }
         return $this;
     }
 
