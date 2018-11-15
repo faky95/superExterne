@@ -45,8 +45,11 @@
                 <div class="form-group">
                     <div class="col-lg-12 clearfix form-actions">
                         <div class="checkbox left">
-                            <input type="checkbox" id="remember_me" name="_remember_me" value="on" class="styled" /> <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                            <p><a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié??</a></p>
                         </div>
+                        {# <div class="checkbox left">
+                            <input type="checkbox" id="remember_me" name="_remember_me" value="on" class="styled" /> <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                        </div> #}
                         <button type="submit" class="btn btn-warning right" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}"> Connexion</button>
                     </div>
                 </div><!-- End .form-group  -->
