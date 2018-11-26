@@ -1,0 +1,83 @@
+	<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal">
+		<span class="icon12 minia-icon-close"></span>
+	</button>
+	<h4 align="left">
+		<span class="icon24 icomoon-icon-download"></span>
+       	<span>Telecharger guide</span>
+	</h4>
+</div>
+<div style="margin-top:10px;">
+	
+                <ul style="list-style-type : none;text-align:center;">
+                    {% if has_rights('ROLE_ADMIN') or has_rights('ROLE_SUPER_ADMIN') %}
+
+                        <li>
+                            <a href="{{ asset('pdf/administrateur.pdf') }}">
+                                <button class="btn btn-primary"><span class="icon16 entypo-icon-download white"></span>administrateur.pdf</button>
+                            </a>
+                        </li>
+                        {% if  has_rights('ROLE_ANIMATEUR')%}
+                            <li>
+                                <a href="{{ asset('pdf/animateur.pdf') }}">
+                                    <button class="btn btn-warning"><span class="icon16 entypo-icon-download white"></span>animateur.pdf</button>
+                                </a>
+                            </li> 
+                        {% endif %}
+                         {% if  has_rights('ROLE_PORTEUR')%}
+                            <li>
+                                <a href="{{ asset('pdf/porteur.pdf') }}">
+                                    <button class="btn btn-info"><span class="icon16 entypo-icon-download white"></span>porteur.pdf</button>
+                                </a>
+                            </li> 
+                        {% endif %}
+                         {% if  has_rights('ROLE_MANAGER')%}
+                            <li>
+                                <a href="{{ asset('pdf/manager.pdf') }}">
+                                    <button class="btn btn-success"><span class="icon16 entypo-icon-download white"></span>manager.pdf</button>
+                                </a>
+                            </li> 
+                        {% endif %}
+                    {% endif %}
+
+                    {% if has_rights('ROLE_MANAGER') and not has_rights('ROLE_ADMIN') and not has_rights('ROLE_SUPER_ADMIN') %}
+                        <li>
+                            <a href="{{ asset('pdf/manager.pdf') }}">
+                                <button class="btn btn-success"><span class="icon16 entypo-icon-download white"></span>manager.pdf</button>
+                            </a>
+                        </li>            
+                    {% endif %} 
+
+                    {% if has_rights('ROLE_PORTEUR') and not has_rights('ROLE_ADMIN') and not has_rights('ROLE_SUPER_ADMIN') %}
+                        <li>
+                            <a href="{{ asset('pdf/porteur.pdf') }}">
+                                <button class="btn btn-info"><span class="icon16 entypo-icon-download white"></span>porteur.pdf</button>
+                            </a>
+                        </li> 
+                    {% endif %}
+                    {% if has_rights('ROLE_ANIMATEUR') and not has_rights('ROLE_ADMIN') and not has_rights('ROLE_SUPER_ADMIN') %}
+                        <li>
+                            <a href="{{ asset('pdf/animateur.pdf') }}">
+                                <button class="btn btn-warning"><span class="icon16 entypo-icon-download white"></span>animateur.pdf</button>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                   
+
+             
+
+                   
+                </ul>
+
+                {# <div class="form-group form-actions">
+                    <div class="col-lg-offset-2">
+                        <a href="{{path('dashboard')}}"><button class="btn btn-danger">Fermer</button></a>
+                    </div>
+                </div> #}
+                </div>
+            
+         
+
+
+ 

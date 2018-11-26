@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Orange\MainBundle\Entity\Action;
 use Orange\MainBundle\Entity\Utilisateur;
 use Orange\QuickMakingBundle\Annotation\QMLogger;
+use Symfony\Component\HttpFoundation\Request;
 /**
  * Controlleur du Tableau de bord
  * @author madiagne
@@ -139,6 +140,62 @@ class DashboardController extends BaseController {
 		$rq=$rep->listAllElementsGeneral($role);
 		$map= $this->getMapping()->getReporting()->transformRequeteToSimpleNull($rq);
 		return array('req'=>$map);
+	}
+
+			/**
+	 * Tableau de bord
+	 * @QMLogger(message="Page d'accueil")
+	 * @Route("/mail", name="mail")
+	 * @Method("GET")
+	 * @Template()
+	 */
+	public function contactAction()
+	{
+		return $this->render('OrangeMainBundle:Dashboard:mail.html.twig');
+	}
+
+	
+		/**
+	 * Tableau de bord
+	 * @QMLogger(message="Page d'accueil")
+	 * @Route("/send", name="send")
+	 * @Method("POST")
+	 * @Template()
+	 */
+	public function sendAction(Request $request)
+	{
+		$user=$this->getUser()->getEmail();
+		extract($_POST);
+		if(isset($send) && !empty($objet) && !empty($message))
+		{
+			$message =( new \Swift_Message($objet))
+			->setFrom(array('orange@orange.sn'=>'SUPER'))
+			//->setFrom($user)
+			->setTo('support@super-orange.sn')
+			->setCc(array("fatoukine.ndao@orange-sonatel.com","madiagne.sylla@orange-sonatel.com"))
+			->setBody($message);
+			 $this->get('mailer')->send($message);
+			 $this->addFlash('success', "Le mail a été envoyé!!");
+
+		}
+		else{
+			$this->addFlash('warning', "Le mail n'a pas été envoyé!!");
+		}
+		
+		
+		return $this->redirect($this->generateUrl('dashboard'));
+	}
+
+		/**
+	 * @Method("GET")
+	 * @Template()
+	 * @Route("/guide_utilisation", name="guide_utilisation")
+	 * 
+	 */
+	public function downloadGuideAction()
+	{
+		
+	   return $this->render('OrangeMainBundle:Dashboard:guide.html.twig');
 	}
 
 		/**

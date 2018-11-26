@@ -1,1 +1,28 @@
-{% extends '::base.html.twig' %}
+	<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal">
+		<span class="icon12 minia-icon-close"></span>
+	</button>
+	<h4 align="left">
+		<span class="icon24 icomoon-icon-mail"></span>
+       	<span>Nous Contacter</span>
+	</h4>
+</div>
+<div style="">
+    <form novalidate="novalidate" action="{{path('send')}}" method = "post"  class="form-horizontal" role="form">
+      <div class="form-group col-lg-12"style="margin-left:10px;">
+        <label for="subject">Objet :</label>
+        <input type="text" class="form-control" name="objet">
+    </div>
+        <div class="form-group col-lg-12"style="margin-left:10px;">
+           <label for="message">Message :</label> <br>
+            <textarea name="message" rows="6" cols="40"></textarea>     
+        </div>
+     
+        <div class="form-group form-actions">
+            <div class="col-lg-offset-2">
+                <button type="submit" class="btn btn-info marginR10 marginL10" name="send">Envoyer</button>
+                <button class="btn btn-danger">Annuler</button>
+            </div>
+        </div><!-- End .form-group  -->
+    </form>
+</div>
