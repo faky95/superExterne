@@ -1,6 +1,7 @@
 <?php
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AppKernel extends Kernel
 {
@@ -45,7 +46,13 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-    	$loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+    	$loader->load(function (ContainerBuilder $container) {
+    		$container->setParameter('container.autowiring.strict_mode', true);
+    		$container->setParameter('container.dumper.inline_class_loader', true);
+    		
+    		$container->addObjectResource($this);
+    	});
+    		$loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
     }
     
     /**
@@ -64,19 +71,29 @@ class AppKernel extends Kernel
     	return $this;
     }
     
+    public function getRootDir()
+    {
+    	return __DIR__;
+    }
+    
+    public function getCacheDir()
+    {
+    	return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+    }
+    
     /**
      * {@inheritdoc}
      */
     public function getLogDir()
     {
-    	return $this->rootDir.'/logs/'.($this->entreprise ? $this->entreprise : 'main');
+    	return dirname(__DIR__).'/var/logs'.($this->entreprise ? $this->entreprise : 'main');
     }
 
     /**
      * get WEB Dir
      */
     public function getWebDir() {
-        return sprintf('%s/../web', $this->rootDir);
+    	return dirname(__DIR__).'/web';
     }
 
     /**
