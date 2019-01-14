@@ -24,7 +24,7 @@ class AppKernel extends Kernel
         	new FOS\UserBundle\FOSUserBundle(),
         	new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         	new Ob\HighchartsBundle\ObHighchartsBundle(),
-        	new AppVentus\AlertifyBundle\AvAlertifyBundle(),
+        	new Troopers\AlertifyBundle\TroopersAlertifyBundle(),
         	new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
         	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         	new FOS\RestBundle\FOSRestBundle(),
@@ -86,7 +86,7 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-    	return dirname(__DIR__).'/var/logs'.($this->entreprise ? $this->entreprise : 'main');
+    	return dirname(__DIR__).'/var/logs/'.($this->entreprise ? $this->entreprise : 'main');
     }
 
     /**
