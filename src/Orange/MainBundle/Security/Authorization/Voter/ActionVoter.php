@@ -5,11 +5,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Orange\MainBundle\Entity\Action;
 use Orange\MainBundle\Entity\Utilisateur;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
-class ActionVoter extends AbstractVoter {
+class ActionVoter extends Voter {
 	
 	const CREATE 	 = 'create';
 	const READ 	 	 = 'read';
@@ -17,13 +18,39 @@ class ActionVoter extends AbstractVoter {
 	const DELETE	 = 'delete';
 	const IMPORT	 = 'import';
 	
+	/**
+	 * @var EntityManager
+	 */
 	private $em;
 	
+	/**
+	 * @var ContainerInterface
+	 */
 	protected $container;
 	
-	public function __construct(EntityManager $em, ContainerInterface $container) {
+	/**
+	 * @param EntityManager $em
+	 * @param ContainerInterface $container
+	 */
+	public function setServices(EntityManager $em, ContainerInterface $container) {
 		$this->em = $em;
 		$this->container = $container;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @see \Symfony\Component\Security\Core\Authorization\Voter\Voter::supports()
+	 */
+	protected function supports($attribute, $subject) {
+		
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @see \Symfony\Component\Security\Core\Authorization\Voter\Voter::voteOnAttribute()
+	 */
+	protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+		
 	}
 	
 	protected function getSupportedAttributes() {
@@ -35,7 +62,7 @@ class ActionVoter extends AbstractVoter {
 	}
 	
 	protected function isGranted($attribute, $action, $user = null) {
-		$user = $this->container->get('security.context')->getToken()->getUser();
+		$user = $this->container->get('security.token_storage')->getToken()->getUser();
 		// make sure there is a user object (i.e. that the user is logged in)
 		if(!$user instanceof UserInterface) {
 			return false;

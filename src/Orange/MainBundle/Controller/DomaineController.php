@@ -81,9 +81,9 @@ class DomaineController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $data = $this->findEntities($em, $espace_id, $projet_id);
         $form = $this->createCreateForm($entity, 'Domaine', array(
-   				'attr' => array('security_context' => $this->get('security.context'))
+   				'attr' => array('security_context' => $this->get('security.authorization_checker'))
         	));
-        if(!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
         	$form->remove('bu');
         }
         $form->handleRequest($request);
@@ -96,7 +96,7 @@ class DomaineController extends BaseController
 		        } elseif($projet_id!=null) {
 		            $data['projet']->getInstance()->addDomaine($entity);
 		            $em->persist($data['projet']);
-		        } elseif(!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+		        } elseif(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
 	            	$bu = $this->getUser()->getStructure()->getBuPrincipal();
 	            	$bu->addDomaine($entity);
            		}
@@ -130,7 +130,7 @@ class DomaineController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $data = $this->findEntities($em, $espace_id, $projet_id);
         $form   = $this->createCreateForm($entity, 'Domaine', array(
-        		'attr' => array('security_context' => $this->get('security.context'))
+        		'attr' => array('security_context' => $this->get('security.authorization_checker'))
         	));
         return array('entity' => $entity, 'form'   => $form->createView(), 'espace'=> $data['espace'], 'projet'=> $data['projet']);
     }

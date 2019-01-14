@@ -38,7 +38,7 @@ security:
                 check_path: /login_check
                 login_path: /login
             remember_me:
-                key:      "%secret%"
+                secret:      "%secret%"
                 lifetime: 1800 # 1 week in seconds
                 path:     /
             switch_user: { role: ROLE_SUPER_ADMIN, parameter: _want_to_be_this_user }
@@ -72,7 +72,6 @@ security:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/account/register/confirm, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: ROLE_USER }
         
     role_hierarchy:

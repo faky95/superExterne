@@ -65,7 +65,7 @@ class ActionController extends BaseController
 	 */
 	public function indexAction(Request $request, $code_statut=null, $instance_id=null, $structure_id=null, $espace_id=null, $projet_id=null, $chantier_id=null, $code=null) {
 		$em = $this->getDoctrine()->getManager();
-		$form = $this->createForm(new ActionCriteria(), null, array('attr'=>array( 'espace_id'=> $espace_id)));
+		$form = $this->createForm(ActionCriteria::class, null, array('attr'=>array( 'espace_id'=> $espace_id)));
 		$data = $request->get($form->getName());
 		if($request->getMethod()=='POST') {
 			if(isset($data['effacer'])) {
@@ -542,7 +542,6 @@ class ActionController extends BaseController
      * @Template()
      */
     public function showAction($id, $id_espace=null) {
-    	//var_dump($this->container->get('security.context'));exit;
     	/*$arrData = array('centreantipoison.sn', 'comafesa.com', 'samsara-lcs.sn', 'chocosen.sn', 'exa.sn', 'orangesmspro.sn', 'tresorpublic.sn', 'avs.sn', 'secufoudre.sn', 'marbresgranites.sn', 'arezkitp.sn', 'atlantic-electronics.com', 'archidessin.com', 'delphinus.sn', 'quartierdespros.sn', 'apacsn.com', 'netcrm.sn', 'saicom.sn');
     	foreach ($arrData as $email) {
 	    	$mail = \Swift_Message::newInstance();

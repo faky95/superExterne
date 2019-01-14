@@ -23,7 +23,7 @@ class LogsListener {
 	public function preUpdate(PreUpdateEventArgs $args) {
 // 		$entity = $args->getEntity();
 // 		$entityManager = $args->getEntityManager();
-// 		$securityContext = $this->container->get('security.context');
+// 		$securityContext = $this->container->get('security.token_storage');
 // 		$user = $securityContext->getToken()?$securityContext->getToken()->getUser():null;
 // 		$url = $this->container->get('request')?$this->container->get('request')->getRequestUri():null;
 // 		$entityMetaData = $entityManager->getClassMetadata(get_class($entity));

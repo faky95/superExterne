@@ -229,12 +229,6 @@ class Action
      * @ORM\OneToOne(targetEntity="ActionCyclique", mappedBy="action", cascade={"persist"})
      **/
     private $actionCyclique;
-    
-    /**
-     * @var Reco
-     * @ORM\OneToOne(targetEntity="Reco", mappedBy="action", cascade={"persist", "merge", "remove"})
-     **/
-    private $reco;
         
     /**
      * @var string

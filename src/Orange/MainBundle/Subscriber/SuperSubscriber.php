@@ -44,7 +44,7 @@ class SuperSubscriber implements EventSubscriber
     	$entity = $args->getObject();
     	$entityManager = $args->getObjectManager();
     	$helper = $this->container->get( 'orange.main.mailer' );
-    	$securityContext = $this->container->get('security.context');
+    	$securityContext = $this->container->get('security.token_storage');
     	
     	if ($entity instanceof Action) 
     	{

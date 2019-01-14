@@ -41,7 +41,7 @@ class PrioriteController extends BaseController
     {
         $entity = new Priorite();
         $form = $this->createCreateForm($entity,'Priorite');
-        if(!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN'))
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN'))
         {
         	$form->remove('bu');
         }

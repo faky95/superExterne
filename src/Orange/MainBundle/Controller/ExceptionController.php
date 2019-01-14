@@ -3,13 +3,12 @@ namespace Orange\MainBundle\Controller;
 
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController as Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Debug\Debug;
 use Orange\MainBundle\Service\Mailer;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Debug\Exception\FlattenException;
 
 class ExceptionController extends Controller {
 	
@@ -29,16 +28,12 @@ class ExceptionController extends Controller {
 	protected $transport;
 	
 	/**
-	 * @param \Twig_Environment $twig
-	 * @param \Symfony\Component\Debug\Debug $debug
 	 * @param \Orange\MainBundle\Service\Mailer $mailer
 	 * @param \Swift_Transport $transport
 	 * @param \Symfony\Component\Security\Core\SecurityContext $securityContext
 	 */
-	public function __construct(\Twig_Environment $twig, $debug, $mailer, $transport, $securityContext)
+	public function setServices($mailer, $transport, $securityContext)
 	{
-		$this->twig = $twig;
-		$this->debug = $debug;
 		$this->mailer = $mailer;
 		$this->transport = $transport;
 		$this->user = $securityContext->getToken() ? $securityContext->getToken()->getUser() : null;
@@ -62,7 +57,7 @@ class ExceptionController extends Controller {
 		$code = $exception->getStatusCode();
 		if($showException==false && $code!=404 && $this->user) {
 			//contact admin
- 			$to = array("mamekhady.diouf@orange-sonatel.com", "madiagne.sylla@orange-sonatel.com");
+ 			$to = array("madiagne.sylla@orange-sonatel.com");
  			$cc = array();
 			$content = $this->twig->render('OrangeMainBundle:Exception:exception_full_bis.html.twig', array(
 							'status_code' => $code, 'currentContent' => $currentContent, 'logger' => $logger, 'exception' => $exception,

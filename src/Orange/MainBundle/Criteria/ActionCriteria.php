@@ -58,7 +58,7 @@ class ActionCriteria extends AbstractCriteria
             	->add('fromCloture', 'date', array('label' => 'Date Clôture Du:', 'widget' => 'single_text', 'input'  => 'datetime', 'format' => 'dd/MM/yyyy'))
             	->add('toCloture', 'date', array('label' => 'Au:', 'widget' => 'single_text', 'input'  => 'datetime', 'format' => 'dd/MM/yyyy'))
             	->add('instances', 'entity', array('class' => 'OrangeMainBundle:Instance', 'label' => 'Instances', 'multiple'=>true, 'attr' => array('class' => 'select2')
-            			,'query_builder' => function(InstanceRepository $ir)use($builder) {
+            			,'query_builder' => function(InstanceRepository $ir) use ($builder) {
 						$instance=$builder->getData() ? $builder->getData()->getInstance() : null;
 						if(!$instance || !$instance->getEspace()){
 							$data = $parameters = array();
@@ -79,7 +79,7 @@ class ActionCriteria extends AbstractCriteria
             			,'query_builder' => function(ActionGeneriqueRepository $agr){
             					return $agr->filter();
             			}
-            			))
+            		))
             	->add('hasActionGenerique', 'checkbox', array('label' => 'Rattaché à des actions génériques ?', 'required' => false))
 		        ->add('filtrer', 'submit', array('label' => 'Filtrer', 'attr' => array('class' => 'btn btn-warning submitLink')))
 		        ->add('effacer', 'submit', array('label' => 'Effacer', 'attr' => array('class' => 'btn btn-danger submitLink')));

@@ -45,15 +45,15 @@ class InstanceController extends BaseController
     public function createAction(Request $request)
     {
         $entity = new Instance();
-        $form = $this->createCreateForm($entity,'Instance', array('attr' => array('security_context' => $this->get('security.context'))));
-        if(!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+        $form = $this->createCreateForm($entity,'Instance', array('attr' => array('security_context' => $this->get('security.authorization_checker'))));
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
         	$form->remove('bu');
         }
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
-            if(!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+            if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             	$bu = $this->getUser()->getStructure()->getBuPrincipal();
             	$bu->addInstance($entity);
             	if($entity->getStructure()->count()==0){
@@ -78,7 +78,7 @@ class InstanceController extends BaseController
     public function newAction()
     {
         $entity = new Instance();
-        $form   = $this->createCreateForm($entity, 'Instance', array('attr' => array('security_context' => $this->get('security.context'))));
+        $form   = $this->createCreateForm($entity, 'Instance', array('attr' => array('security_context' => $this->get('security.authorization_checker'))));
         return array('entity' => $entity, 'form'   => $form->createView());
     }
 
