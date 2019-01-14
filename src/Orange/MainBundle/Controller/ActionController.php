@@ -320,8 +320,12 @@ class ActionController extends BaseController
     	}
     	if($request->getMethod()=='POST') {
     		if($form->isValid()) {
+				$debutRelance=$entity->getInstance()->getBu()[0]->getDebutRelance();
+				$dateRelance=($entity->getDateInitial()->getTimestamp()) + ($debutRelance*3600*24);
+				$relance= date('Y-m-d',$dateRelance);
     			$em = $this->getDoctrine()->getManager();
-                $entity->setAnimateur($this->getUser());
+				$entity->setAnimateur($this->getUser());
+				$entity->setDateRelance(\DateTime::createFromFormat('Y-m-d', $relance));
                 if($entity->getErq()->getFile()) {
                 	$entity->getErq()->setUtilisateur($this->getUser());
                 	$entity->addDocument($entity->getErq(), $this->getMyParameter('types', array('creation')));

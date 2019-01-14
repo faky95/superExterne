@@ -70,6 +70,12 @@ class Action
      * @Assert\NotBlank(message="Vous devez donner une date de fin pour cette action ! ")
      */
     private $dateFinPrevue;
+
+      /**
+     * @var \Date
+     * @ORM\Column(name="date_relance", type="date", nullable=true)
+     */
+    private $dateRelance;
     
     /**
      * @ORM\OneToMany(targetEntity="ActionAvancement", mappedBy="action", cascade={"persist", "merge", "remove"})
@@ -1324,5 +1330,29 @@ class Action
     public function getComplement()
     {
         return $this->complement;
+    }
+
+    /**
+     * Get the value of dateRelance
+     *
+     * @return  \Date
+     */ 
+    public function getDateRelance()
+    {
+        return $this->dateRelance;
+    }
+
+    /**
+     * Set the value of dateRelance
+     *
+     * @param  \Date  $dateRelance
+     *
+     * @return  self
+     */ 
+    public function setDateRelance($dateRelance)
+    {
+        $this->dateRelance = $dateRelance;
+
+        return $this;
     }
 }
