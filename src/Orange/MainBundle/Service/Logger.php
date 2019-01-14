@@ -10,6 +10,6 @@ Class Logger
 	{
 		$login = $user ? $user->getUsername() : 'inconnu';
 		$logger->info('['.date('Y-m-d H:i:s').'] trace '.$descAction.' | '.$user->getPrenom().' '.$user->getNom().' | '.$login.' | '.
-				$container->get('request')->getClientIp().' | '.$_SERVER['REQUEST_URI']);
+				$container->get('request_stack')->getClientIp().' | '.$_SERVER['REQUEST_URI']);
 	}
 }

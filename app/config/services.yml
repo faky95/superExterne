@@ -26,10 +26,10 @@ services:
     fos_user.doctrine_registry:
         alias: doctrine
             
-    twig.extension.intl:
-        class: Twig_Extensions_Extension_Intl
-        tags:
-            - { name: twig.extension }
+#    twig.extension.intl:
+#        class: Twig_Extensions_Extension_Intl
+#        tags:
+#            - { name: twig.extension }
             
     twig.extension.orange.main.security:
         class: Orange\MainBundle\Twig\SecurityExtension
@@ -67,11 +67,11 @@ services:
             
     orange.main.statistique_criteria:
         class: Orange\MainBundle\Criteria\StatistiqueCriteria
-        arguments: ["@security.context"]
+        arguments: ["@security.token_storage"]
 
     orange_main.actions:
         class: Orange\MainBundle\Service\Actions
-        arguments: ["@twig", "@router", "%states%", "@security.context", "@doctrine.orm.entity_manager"]
+        arguments: ["@twig", "@router", "%states%", "@security.token_storage", "@doctrine.orm.entity_manager"]
          
 #    my.listener:
 #        class: Orange\MainBundle\Listener\SuperListener
@@ -90,7 +90,7 @@ services:
             
     orange.main.mailer:
         class: Orange\MainBundle\Service\Mailer
-        arguments: ["@mailer", "@templating"]
+        arguments: ["@mailer", "@templating", "%kernel.debug%"]
         
     orange.validator.report:                             
         class: Orange\MainBundle\Validator\Constraints\ActionReportDateValidator   
@@ -135,15 +135,19 @@ services:
     # Security voters
     security.access.action_voter:
         class:      Orange\MainBundle\Security\Authorization\Voter\ActionVoter
-        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
         public:     false
+        calls:
+            - method: setServices
+              arguments: ["@doctrine.orm.entity_manager", "@service_container"]
         tags:
             - { name: security.voter }
             
     security.access.signalisation_voter:
         class:      Orange\MainBundle\Security\Authorization\Voter\SignalisationVoter
-        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
         public:     false
+        calls:
+            - method: setServices
+              arguments: ["@doctrine.orm.entity_manager", "@service_container"]
         tags:
             - { name: security.voter }
 
@@ -189,17 +193,17 @@ services:
         
     orange.force_passupdate:
         class: Orange\MainBundle\EvenListener\PassUpdateListener
-        arguments: ["@router", "@security.context", "@session", "@service_container"]
+        arguments: ["@router", "@session", "@service_container"]
         tags:
            - { name: kernel.event_listener, event: kernel.request, method: onCheckExpired, priority: 1 }
     
     orange.main.statistique_criteria:
         class: Orange\MainBundle\Criteria\StatistiqueCriteria
-        arguments: ["@security.context"]
+        arguments: ["@security.token_storage"]
         
     orange.main.signalisation_criteria:
         class: Orange\MainBundle\Criteria\SignalisationCriteria
-        arguments: ["@security.context", "@doctrine.orm.entity_manager"]
+        arguments: ["@security.token_storage", "@doctrine.orm.entity_manager"]
         
     orange.main.setStructure:
         class: Orange\MainBundle\Service\StructureAction
@@ -211,19 +215,22 @@ services:
         
     app.exception_controller:
         class: Orange\MainBundle\Controller\ExceptionController
-        arguments: ["@twig", "%kernel.debug%", "@orange.main.mailer", "@swiftmailer.transport.real", "@security.context", ]
+        arguments: ["@twig", "%kernel.debug%"]
+        calls:
+            - method: setServices
+              arguments: ["@orange.main.mailer", "@swiftmailer.transport.real", "@security.token_storage"]
         
     orange_main.action_manager:
         class: Orange\MainBundle\Model\ActionManager
-        arguments: ["@doctrine.orm.entity_manager","@service_container", "@security.context"]
+        arguments: ["@doctrine.orm.entity_manager","@service_container", "@security.token_storage"]
     
     orange_main.signalisation_manager:
         class: Orange\MainBundle\Model\SignalisationManager
-        arguments: ["@doctrine.orm.entity_manager","@service_container", "@security.context"]
+        arguments: ["@doctrine.orm.entity_manager","@service_container", "@security.token_storage"]
         
     orange_main.actiongenerique_manager:
         class: Orange\MainBundle\Model\ActionGeneriqueManager
-        arguments: ["@doctrine.orm.entity_manager","@service_container", "@security.context"]
+        arguments: ["@doctrine.orm.entity_manager","@service_container", "@security.token_storage"]
 
     orange_main.action_listener:
         class: Orange\MainBundle\Listener\ActionListener
@@ -246,17 +253,17 @@ services:
     orange_main.action_event:
         class: Orange\MainBundle\Event\ActionEvent
         public : true
-        arguments: ["@security.context", "@orange_main.action_manager"]
+        arguments: ["@security.token_storage", "@orange_main.action_manager"]
         
     orange_main.signalisation_event:
         class: Orange\MainBundle\Event\SignalisationEvent
         public : true
-        arguments: ["@security.context", "@orange_main.signalisation_manager"]
+        arguments: ["@security.token_storage", "@orange_main.signalisation_manager"]
         
     orange_main.actiongenerique_event:
         class: Orange\MainBundle\Event\ActionGeneriqueEvent
         public : true
-        arguments: ["@security.context", "@orange_main.actiongenerique_manager", "@orange_main.action_manager"]
+        arguments: ["@security.token_storage", "@orange_main.actiongenerique_manager", "@orange_main.action_manager"]
 
     my_service.logger:
         class:     Symfony\Bridge\Monolog\Logger
@@ -271,7 +278,7 @@ services:
     orange_main.action_correct:
         class: Orange\MainBundle\Service\ActionCorrect
         public : true
-        arguments: ["@security.context", "@doctrine.orm.entity_manager", "@orange.main.mailer"]
+        arguments: ["@security.token_storage", "@doctrine.orm.entity_manager", "@orange.main.mailer"]
         
     orange.main.query:
         class: Orange\MainBundle\Service\Query

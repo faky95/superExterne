@@ -13,7 +13,7 @@ class Builder extends ContainerAware
     {
        	$menu = $factory->createItem('MainMenu');
     	$menu->addChild('Accueil', array('route' => 'dashboard', 'label' => 'Accueil', 'attributes' => array('class' => 'icomoon-icon-home')));
-       	$user = $this->container->get('security.context')->getToken()->getUser();
+       	$user = $this->container->get('security.token_storage')->getToken()->getUser();
        	
    		//$data = $this->simpleMenu($menu,$user);
        	if($user->hasRole(Utilisateur::ROLE_SUPER_ADMIN)) {

@@ -14,9 +14,6 @@ class TypeActionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    	
-//     	$securityContext = $options['attr']['security_context'];
-    	
         $builder
             ->add('type', null, array('label'=> 'Libellé type :'))
             ->add('couleur')

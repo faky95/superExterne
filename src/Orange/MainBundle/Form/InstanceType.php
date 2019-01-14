@@ -83,7 +83,7 @@ class InstanceType extends AbstractType
             						'label' => 'Structures :',
             						'empty_value' => 'Choisir les structures',
 									'query_builder'=>function(StructureRepository $sr) {
-										return $sr->createQueryBuilder('s');
+										return $sr->filter();
 									}
             				))
             ->add('add', 'submit', array('label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-warning')))

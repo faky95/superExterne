@@ -33,7 +33,7 @@ class Registry extends BaseRegistry
 	public function getManager($name = null) {
 		$em = parent::getManager($name);
 		try {
-			$token = $this->container->get('security.context')->getToken();
+			$token = $this->container->get('security.token_storage')->getToken();
 			$user = $token ? $token->getUser() : null;
 		} catch(\Exception $e) {
 			$user = null;

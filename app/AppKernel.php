@@ -1,10 +1,15 @@
 <?php
-
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+	
+	/**
+	 * @var string
+	 */
+	private $entreprise;
+	
     public function registerBundles()
     {
         $bundles = array(
@@ -13,7 +18,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
         	new FOS\UserBundle\FOSUserBundle(),
@@ -26,9 +30,8 @@ class AppKernel extends Kernel
         	new JMS\SerializerBundle\JMSSerializerBundle(),
         	new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         	new Nelmio\CorsBundle\NelmioCorsBundle(),
-        	new Orange\QuickMakingBundle\OrangeQuickMakingBundle(),
-        	new Orange\MainBundle\OrangeMainBundle()
-
+        	new Orange\MainBundle\OrangeMainBundle(),
+        	new Orange\QuickMakingBundle\OrangeQuickMakingBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -42,7 +45,31 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+    	$loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+    }
+    
+    /**
+     * @return string
+     */
+    public function getEntreprise() {
+    	return $this->entreprise;
+    }
+    
+    /**
+     * @param string $entreprise
+     * @return AppKernel
+     */
+    public function setEntreprise($entreprise) {
+    	$this->entreprise = $entreprise;
+    	return $this;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+    	return $this->rootDir.'/logs/'.($this->entreprise ? $this->entreprise : 'main');
     }
 
     /**

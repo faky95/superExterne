@@ -18,10 +18,10 @@ class LogFormatter implements FormatterInterface
 	public function format(array $record)
 	{
 		$container = $record['context']['container'];
-		$token	= $container->get('security.context')->getToken();
+		$token	= $container->get('security.token_storage')->getToken();
 		$user	= $token ? $token->getUser() : null;
 		$login 		= $user ? $user->getUsername() : 'inconnu';
-		$request	= $container->get('request');
+		$request	= $container->get('request_stack')->getCurrentRequest();
 		
 		if(isset($record['context']['request_uri'])){
 		   $line  = "";
@@ -29,7 +29,7 @@ class LogFormatter implements FormatterInterface
 			$space = '			';
 			$line = sprintf("[%s]_____________________________________	%s", date('Y-m-d H:i:s'), $record['message']).PHP_EOL.$space.
 				sprintf("			|____ Nom d'utilisateur	__________	%s", $login).PHP_EOL.$space.
-				sprintf("			|____ Adresse IP		__________	%s", $container->get('request')->getClientIp()).PHP_EOL.$space.
+				sprintf("			|____ Adresse IP		__________	%s", $request->getClientIp()).PHP_EOL.$space.
 				sprintf("			|____ Route				__________	%s", $request->get('_route')).PHP_EOL.$space.
 				sprintf("			|____ Paramètres		__________	%s", json_encode($request->get('_route_params'))).PHP_EOL.$space.
 				sprintf("			|____ URL				__________	%s", $request->getUri()).PHP_EOL.$space;
