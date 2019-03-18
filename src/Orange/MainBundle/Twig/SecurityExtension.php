@@ -2,6 +2,7 @@
 namespace Orange\MainBundle\Twig;
 
 use Symfony\Component\Security\Core\SecurityContext;
+use Twig\TwigFilter; 
 
 class SecurityExtension extends \Twig_Extension
 {
@@ -28,8 +29,8 @@ class SecurityExtension extends \Twig_Extension
      */
     public function getFilters() {
         return array(
-        		'has_rights_animateur'	=> new \Twig_Filter_Method($this, 'hasRigthsAnimateur', array('is_safe' => array('html'))),
-        		'has_rights_manager'	=> new \Twig_Filter_Method($this, 'hasRigthsManager', array('is_safe' => array('html')))
+        		'has_rights_animateur'	=> new TwigFilter('has_rights_animateur', array($this,'hasRigthsAnimateur'), array('is_safe' => array('html'))),
+        		'has_rights_manager'	=> new TwigFilter('has_rights_manager', array($this,'hasRigthsManager'), array('is_safe' => array('html')))
         	);
     }
     

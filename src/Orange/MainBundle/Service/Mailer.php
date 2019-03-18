@@ -9,16 +9,26 @@ class Mailer
 	 * @var \Swift_Mailer
 	 */
 	protected $mailer;
+
+	/**
+	 * @var boolean
+	 */
+	protected $debug;
 	
-    protected $templating;
+	/**
+	 * @var EngineInterface
+	 */
+	protected $templating;
+   
     private $from = "orange@orange.sn";
-    private $bcc = array("madiagne.sylla@orange-sonatel.com");
+    private $bcc = array("madiagne.sylla@orange-sonatel.com","fatoukine.ndao@orange-sonatel.com");
     private $name = " SUPER";
     
-    public function __construct($mailer, EngineInterface $templating)
+    public function __construct($mailer, EngineInterface $templating, $debug=null)
     {
         $this->mailer = $mailer;
-        $this->templating = $templating;
+		$this->templating = $templating;
+		$this->debug = $debug;
     }
     
     /**
@@ -36,6 +46,9 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:nouvelleAction.html.twig', array('data' => $data)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+				$mail->setBcc($this->bcc);
+		}	
 		return $this->mailer->send($mail);
     }
     
@@ -49,11 +62,14 @@ class Mailer
     	$manager = $tache->getActionCyclique()->getAction()->getPorteur()->getSuperior();
     	$mail->setFrom(array($this->from => $this->name))
 	    	->setTo($to)
- 	    	->setBcc(array('madiagne.sylla@orange-sonatel.com'))
+ 	    	->setBcc(array('madiagne.sylla@orange-sonatel.com','fatoukine.ndao@orange-sonatel.com'))
 	    	->setSubject("Nouvelle tache")
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:nouvelleTache.html.twig', array('tache' => $tache)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
     	if($manager) {
     		$copy = array_merge($copy, array($manager->getEmail()));
     	}
@@ -70,6 +86,9 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:nouvelleSignalisation.html.twig', array('data' => $data)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
 		return $this->mailer->send($mail);
     }
     
@@ -81,7 +100,10 @@ class Mailer
 	    	->setSubject("Création de compte")
 	    	->setBody($this->templating->render('OrangeMainBundle:Utilisateur:email.html.twig', array('user' => $data)))
 			->setContentType('text/html')
-    		->setCharset('utf-8');
+			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
     	return $this->mailer->send($mail);
     }
     
@@ -94,7 +116,7 @@ class Mailer
 	    	->setBody($body)
 	    	->setContentType('text/html')
 	    	->setCharset('utf-8');
-    	if($trace) {
+    	if($trace || $this->debug) {
     		$mail->setBcc($this->bcc);
     	}
     	return $this->mailer->send($mail);
@@ -108,8 +130,11 @@ class Mailer
 	    	->setSubject($subject)
 	    	->setBody($body)
 	    	->setContentType('text/html')
-	    	->setCharset('utf-8')
-	    	->attach(\Swift_Attachment::fromPath($chemin.'/'.$file));
+			->setCharset('utf-8')	
+			->attach(\Swift_Attachment::fromPath($chemin.'/'.$file));
+			if($this->debug){
+				$mail->setBcc($this->bcc);
+			}
     	return $this->mailer->send($mail);
     }
     
@@ -121,6 +146,9 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:notifReporting.html.twig', array('body' => $report, 'user' => $user)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}
     	return $this->mailer->send($mail);
     }
     
@@ -132,8 +160,11 @@ class Mailer
     	->setSubject($subject)
     	->setBody($this->templating->render('OrangeMainBundle:Notification:reporting.html.twig'))
     	->setContentType('text/html')
-    	->setCharset('utf-8')
-    	->attach(\Swift_Attachment::fromPath('./web/upload/reporting/'.$file));
+		->setCharset('utf-8')	
+		->attach(\Swift_Attachment::fromPath('./web/upload/reporting/'.$file));
+	if($this->debug){
+		$mail->setBcc($this->bcc);
+	}	
     	return $this->mailer->send($mail);
     }
     
@@ -146,7 +177,10 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:exportAction.html.twig'))
 	    	->setContentType('text/html')
 	    	->setCharset('utf-8')
-	    	->attach(\Swift_Attachment::fromPath('./web/upload/reporting/'.$file));
+			->attach(\Swift_Attachment::fromPath('./web/upload/reporting/'.$file));
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
     	return $this->mailer->send($mail);
     }
     
@@ -160,7 +194,10 @@ class Mailer
 	    			'url' => $body['accueil_url'], 'action' => $body['action']
     			))
 	    	)->setContentType('text/html')
-    		->setCharset('utf-8');
+			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
     	return $this->mailer->send($mail);
     }
     
@@ -171,7 +208,10 @@ class Mailer
 	    	->setSubject('Création de compte')
 	    	->setBody($this->templating->render('OrangeMainBundle:Utilisateur:registration.html.twig', array('url' => $user)))
 			->setContentType('text/html')
-    		->setCharset('utf-8');
+			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
     	return $this->mailer->send($mail);
     }
     
@@ -182,7 +222,7 @@ class Mailer
 	    	->setSubject($subject)
 	    	->setBody($body)
 	    	->setContentType('text/html');
-    	if($trace) {
+    	if($trace || $this->debug) {
     		$mail->setBcc($this->bcc);
     	}
     	return $this->mailer->send($mail);
@@ -196,7 +236,7 @@ class Mailer
 	    	 ->setSubject($subject)
 	    	 ->setBody($body)
 	    	 ->setContentType('text/html');
-    	 if($trace) {
+    	 if($trace || $this->debug) {
     	 	$mail->setBcc($this->bcc);
     	 }
     	return $this->mailer->send($mail);
@@ -211,6 +251,9 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:notifActionEspace.html.twig', array('body' => $body)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}
 		return $this->mailer->send($mail);
     }
     
@@ -223,6 +266,9 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:newAction.html.twig', array('body' => $body)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
 		return $this->mailer->send($mail);
     }
     
@@ -235,6 +281,9 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:newAction.html.twig', array('body' => $body)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
 		return $this->mailer->send($mail);
     }
     
@@ -247,8 +296,8 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:notifSignalisation.html.twig', array('body' => $body, 'motif' => $motif)))
 	    	->setContentType('text/html')
 	    	->setCharset('utf-8');
-    	if($trace) {
-    		$mail->setBcc(array('madiagne.sylla@orange-sonatel.com'));
+    	if($trace || $this->debug) {
+    		$mail->setBcc(array('madiagne.sylla@orange-sonatel.com','fatoukine.ndao@orange-sonatel.com'));
     	}
     	return $this->mailer->send($mail);
     }
@@ -262,8 +311,8 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:notif.html.twig', array('body' => $body, 'motif' => $motif)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
-    	if($trace) {
-    		//$mail->setBcc(array('madiagne.sylla@orange-sonatel.com'));
+    	if($trace || $this->debug) {
+    		$mail->setBcc(array('madiagne.sylla@orange-sonatel.com','fatoukine.ndao@orange-sonatel.com'));
     	}
 		return $this->mailer->send($mail);
     }
@@ -276,6 +325,9 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:notif.html.twig', array('body' => $body)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
     	return $this->mailer->send($mail);
     }
     
@@ -287,6 +339,9 @@ class Mailer
 	    	->setBody($this->templating->render('OrangeMainBundle:Notification:notifUpdatePorteur.html.twig', array('data' => $data)))
 			->setContentType('text/html')
 			->setCharset('utf-8');
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}
 		return $this->mailer->send($mail);
     }
     
@@ -298,7 +353,10 @@ class Mailer
 	    	->setBody($body)
 	    	->setContentType('text/html')
 	    	->setCharset('utf-8')
-	    	->attach(\Swift_Attachment::fromPath($chemin));
+			->attach(\Swift_Attachment::fromPath($chemin));
+		if($this->debug){
+			$mail->setBcc($this->bcc);
+		}	
     	return $this->mailer->send($mail);
     }
     
@@ -310,7 +368,10 @@ class Mailer
     	->setSubject(utf8_encode($subject))
     	->setBody($this->templating->render('OrangeMainBundle:Notification:notifActionGenerique.html.twig', array('body' => $body)))
     	->setContentType('text/html')
-    	->setCharset('utf-8');
+		->setCharset('utf-8');
+	if($this->debug){
+		$mail->setBcc($this->bcc);
+	}	
     	return $this->mailer->send($mail);
     }
     

@@ -93,6 +93,6 @@
 
 {% block pagescript %}
 	{{ parent() }}
-	{{ block_render('::form_div_layout.html.twig','datatable_options',{with_tag: 1}) }}
+	{{block_render ('::form_div_layout.html.twig','datatable_options',{with_tag: 1}) }}
 	{% include 'OrangeQuickMakingBundle:Extra:datatable.html.twig' with {idTable: 'actionGeneTable', url: path('liste_des_actiongeneriques'), nosorting: {0:0, 1:1, 2:2, 3:3, 4:4} } %}
 {% endblock %}

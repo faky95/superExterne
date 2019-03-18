@@ -3,7 +3,7 @@
 namespace Orange\QuickMakingBundle\Twig;
 
 use Twig_Extension;
-use Twig_Function_Method;
+use Twig_SimpleFunction;
 use Orange\QuickMakingBundle\Service\Block;
 
 class BlockExtension extends Twig_Extension {
@@ -16,7 +16,7 @@ class BlockExtension extends Twig_Extension {
 
     public function getFunctions() {
         return array(
-            'block_render' => new Twig_Function_Method( $this, 'renderBlock', array('is_safe' => array('html')))
+            'block_render' => new Twig_SimpleFunction('render_block', array($this, 'renderBlock'), array('is_safe' => array('html')))
         );
     }
 

@@ -234,19 +234,21 @@ class RelanceMapping extends AbstractMapping {
 		foreach ($actions as $action){
 			$data[$action->getId()] = array('nom' => $action->getPorteur()->getCompletNom(),'instance' => $action->getInstance()->getLibelle(),
 					'animateur' => $action->getInstance()->getAnimateur(),'reference' => $action->getReference(),'delai' => $action->getDateInitial()->format('d-m-Y'),
-					'libelle' => $action->getLibelle(), 'instance_id' => $action->getInstance()->getId(), 'action_id' => $action->getId()
-				);
+					'libelle' => $action->getLibelle(), 'instance_id' => $action->getInstance()->getId(), 'action_id' => $action->getId(),
+					'relance'=>$action->getInstance()->getBu(),'dateRelance'=>$action->getDateRelance()->format('Y-m-d')
+				);  	
 		}
 		$array = array();
 		$i=0;
 		foreach ($data as $value){
 			if(!isset($array['instance'][$value['instance_id']])) {
-				$array['instance'][$value['instance_id']] = array('animateurs' => $value['animateur'], 'instance' => $value['instance'], 'action' => array());
+				$array['instance'][$value['instance_id']] = array('animateurs' => $value['animateur'], 'instance' => $value['instance'],'relances'=>$value['relance'], 'action' => $value['dateRelance']);
 			}
 			$array['instance'][$value['instance_id']]['action'][$i] = array(
-					'id' =>  $value['action_id'], 'porteur' => $value['nom'], 'reference' => $value['reference'], 'libelle' => $value['libelle'], 'delai' => $value['delai']
+					'id' =>  $value['action_id'], 'porteur' => $value['nom'], 'reference' => $value['reference'], 'libelle' => $value['libelle'], 'delai' => $value['delai'],
+					'relances'=>$value['relance'],'action' => $value['dateRelance']
 				);
-			$i++;
+			$i++;	
 		}
 		return $array;
 	}

@@ -102,6 +102,6 @@
  {% endblock %}
  {% block pagescript %}
  {{ parent() }}
-	{{ block_render('::form_div_layout.html.twig','datatable_options',{with_tag: 1}) }}
+	{{block_render ('::form_div_layout.html.twig','datatable_options',{with_tag: 1}) }}
     {% include 'OrangeQuickMakingBundle:Extra:datatable.html.twig' with {idTable: 'actionCycliqueTable', url: path('liste_actions_cycliques'), nosorting: {0:0, 2:3, 3:4} } %}
 {% endblock %}

@@ -172,7 +172,15 @@ class ActionRepository extends BaseRepository {
 	 * @return mixed|\Doctrine\DBAL\Driver\Statement|array|NULL
 	 */
 	public function userToAlertAnimateur($bu, $espace, $projet) {
-		$queryBuilder = $this->createQueryBuilder('a')->leftJoin('a.porteur', 'u')->leftJoin('a.instance', 'i')->leftJoin('i.animateur', 'an')->andWhere("a.etatReel LIKE 'ACTION_FAIT_DELAI' OR a.etatReel LIKE 'ACTION_FAIT_HORS_DELAI'")->orderBy('a.id', 'ASC')->addOrderBy('a.dateAction', 'DESC')->getQuery()->execute();
+		$queryBuilder = $this->createQueryBuilder('a')
+							->leftJoin('a.porteur', 'u')
+							->leftJoin('a.instance', 'i')
+							->leftJoin('i.animateur', 'an')
+							->leftJoin('i.bu','bi')
+							->andWhere("a.etatReel LIKE 'ACTION_FAIT_DELAI' OR a.etatReel LIKE 'ACTION_FAIT_HORS_DELAI'")
+							->orderBy('a.id', 'ASC')
+							->addOrderBy('a.dateAction', 'DESC')
+							->getQuery()->execute();
 		return $queryBuilder;
 	}
 	

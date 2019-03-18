@@ -28,6 +28,20 @@ class Bu
      * @Assert\NotNull()
      */
     private $libelle;
+
+      /**
+     * @var string
+     * @ORM\Column(name="frequence", type="string", length=255, nullable=false)
+     * @Assert\NotNull()
+     */
+    private $frequence;
+
+     /**
+     * @var string
+     * @ORM\Column(name="debut_relance", type="integer", nullable=false)
+     * @Assert\NotNull()
+     */
+    private $debutRelance;
     
     /**
      * @var string $validationAutomatique
@@ -607,5 +621,53 @@ class Bu
     		return $data->getConfig()->getCode() == strtoupper($param);
     	});
     	return $result->count() > 0 ? $result->first()->getEtat() : false;
+    }
+
+    /**
+     * Get the value of frequence
+     *
+     * @return  string
+     */ 
+    public function getFrequence()
+    {
+        return $this->frequence;
+    }
+
+    /**
+     * Set the value of frequence
+     *
+     * @param  string  $frequence
+     *
+     * @return  self
+     */ 
+    public function setFrequence(string $frequence)
+    {
+        $this->frequence = $frequence;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of debutRelance
+     *
+     * @return  string
+     */ 
+    public function getDebutRelance()
+    {
+        return $this->debutRelance;
+    }
+
+    /**
+     * Set the value of debutRelance
+     *
+     * @param  string  $debutRelance
+     *
+     * @return  self
+     */ 
+    public function setDebutRelance(string $debutRelance)
+    {
+        $this->debutRelance = $debutRelance;
+
+        return $this;
     }
 }

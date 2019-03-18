@@ -215,6 +215,8 @@ class DashboardController extends BaseController {
 		 $this->get('mailer')->send($message);
 		return $this->render('OrangeMainBundle:Dashboard:mail.html.twig');
 	}
+
+
 	
 	
 }

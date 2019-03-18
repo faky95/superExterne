@@ -179,7 +179,7 @@ class BaseController extends Controller {
 	 */
 	protected function getLengthResults(QueryBuilder $queryBuilder, $rootColumnName = 'id') {
 	  	$data = $queryBuilder->select(sprintf('COUNT(DISTINCT %s.%s) as number', $queryBuilder->getRootAlias(), $rootColumnName))
-	  		->getQuery()->execute();
+			  ->getQuery()->execute();
 	  	return $data[0]['number'];
 	}
 	

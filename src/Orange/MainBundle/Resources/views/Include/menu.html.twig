@@ -8,8 +8,12 @@
 		<div id="sidebar">
 		<div class="shortcuts">
                 <ul>
-                    <li><a href="#" class="tip" oldtitle="Support section" title="" data-hasqtip="true" aria-describedby="qtip-0"><span class="icon24 icomoon-icon-support"></span></a></li>
-                    <li><a href="#" class="tip" oldtitle="Database backup" title="" data-hasqtip="true" aria-describedby="qtip-1"><span class="icon24 icomoon-icon-database"></span></a></li>
+                     <li>
+                        <a title="Glossaire" href="#myModal" class="actionLink" modal-url="{{path('guide_utilisation')}}" data-target="#myModal" data-toggle="modal"><span class="icon24 icomoon-icon-book"></span></a>
+                    </li>
+                    <li>
+                        <a title="Parametrage Frequence" href="{{path('les_bu')}}"><span class="icon24 icomoon-icon-settings"></span></a>
+                    </li>           
                     <li>
                         <a title="Nous Contacter" href="#myModal" class="actionLink" modal-url="{{path('mail')}}" data-target="#myModal" data-toggle="modal"><span class="icon24 icomoon-icon-mail"></span></a>
                     </li>

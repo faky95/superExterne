@@ -2,8 +2,9 @@
 namespace Orange\MainBundle\Twig;
 
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Orange\MainBundle\Entity\Statut;
+use Twig\TwigFilter;
 
 class OrangeExtension extends \Twig_Extension {
 
@@ -33,7 +34,7 @@ class OrangeExtension extends \Twig_Extension {
 	private $types;
 
 	/**
-	 * @param ContainerAware $container
+	 * @param ContainerAwareTrait $container
 	 * @param array $ids
 	 * @param array $states
 	 * @param array $types
@@ -51,10 +52,10 @@ class OrangeExtension extends \Twig_Extension {
 	 */
     public function getFilters() {
         return array(
-        		'show_status' => new \Twig_Filter_Method($this, 'showStatus', array('is_safe' => array('html'))),
-        		'get_statut' => new \Twig_Filter_Method($this, 'getStatutForAction', array('is_safe' => array('html'))),
-        		'get_statut_tache' => new \Twig_Filter_Method($this, 'getStatutForTache', array('is_safe' => array('html'))),
-        		'get_statut_signalisation' => new \Twig_Filter_Method($this, 'getStatutForSignalisation', array('is_safe' => array('html')))
+        		'show_status' => new TwigFilter('show_status', array($this, 'showStatus'), array('is_safe' => array('html'))),
+        		'get_statut' => new TwigFilter('get_statut_for_action', array($this, 'getStatutForAction'), array('is_safe' => array('html'))),
+        		'get_statut_tache' => new TwigFilter('get_statut_for_tache', array($this, 'getStatutForTache'), array('is_safe' => array('html'))),
+        		'get_statut_signalisation' => new TwigFilter('get_statut_for_signalisation', array($this, 'getStatutForSignalisation'), array('is_safe' => array('html')))
         	);
     }
     

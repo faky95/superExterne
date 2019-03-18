@@ -2,13 +2,15 @@
 namespace Orange\MainBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Knp\Menu\MenuItem;
 use Orange\MainBundle\Entity\Utilisateur;
 use Orange\MainBundle\Entity\Config;
 
-class Builder extends ContainerAware
+class Builder implements ContainerAwareInterface 
 {
+	use ContainerAwareTrait;
     public function main(FactoryInterface $factory, array $options)
     {
        	$menu = $factory->createItem('MainMenu');

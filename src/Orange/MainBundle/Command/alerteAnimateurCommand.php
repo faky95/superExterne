@@ -18,6 +18,8 @@ class alerteAnimateurCommand extends BaseCommand {
 	}
 	
 	public function execute(InputInterface $input, OutputInterface $output){
+		$date=new \DateTime();
+		$dateActu=$date->format('Y-m-d');
 		$espace = $input->getOption('espace');
 		$bu = $input->getOption('bu');
 		$projet = $input->getOption('projet');
@@ -25,17 +27,28 @@ class alerteAnimateurCommand extends BaseCommand {
 		$actions = $em->getRepository('OrangeMainBundle:Action')->userToAlertAnimateur($bu, $projet, $espace);
 		$data = $this->getMapping()->getRelance()->mapDataforAlertAnimateur($actions);
 		foreach($data['instance'] as $instance) {
-			$animateurs = array();
-			foreach ($instance['animateurs'] as $animateur){
-				array_push($animateurs, $animateur->getUtilisateur()->getEmail());
+			$arrFrequence=array();
+			$arrDate=array();
+			array_push($arrDate,$instance['action']);
+			foreach($instance['relances'] as $relance){
+				array_push($arrFrequence,$relance->getFrequence());		
 			}
-			$cc = array();
-			$body = $this->getTemplating()->render('OrangeMainBundle:Relance:alertAnimateur.html.twig', array(
-						'actions' => $instance['action'],'instance' => $instance['instance'],
-						'accueil_url' => $this->getContainer()->get('router')->generate('dashboard', array(), true)
-					));
-			$this->getMailer()->sendRappel($animateurs, $cc, 'Attente de cloture des actions pour '.$instance['instance'], $body, true);
+			if($arrDate==$dateActu){
+					$animateurs = array();
+					foreach ($instance['animateurs'] as $animateur){
+						array_push($animateurs, $animateur->getUtilisateur()->getEmail());
+					}
+					$cc = array();
+					$body = $this->getTemplating()->render('OrangeMainBundle:Relance:alertAnimateur.html.twig', array(
+								'actions' => $instance['action'],'instance' => $instance['instance'],
+								'accueil_url' => $this->getContainer()->get('router')->generate('dashboard', array(), true)
+							));
+					$this->getMailer()->sendRappel($animateurs, $cc, 'Attente de cloture des actions pour '.$instance['instance'], $body, true);
+			}
+
+			
 		}
+		
 		$output->writeln(utf8_encode('Yes! ça marche'));
 	}
 }

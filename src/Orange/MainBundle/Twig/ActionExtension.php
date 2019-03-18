@@ -1,7 +1,8 @@
 <?php 
 namespace Orange\MainBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Twig\TwigFilter;
 
 class ActionExtension extends \Twig_Extension {
 
@@ -31,7 +32,7 @@ class ActionExtension extends \Twig_Extension {
 	private $types;
 
 	/**
-	 * @param ContainerAware $container
+	 * @param ContainerAwareTrait $container
 	 * @param array $ids
 	 * @param array $states
 	 * @param array $types
@@ -49,7 +50,7 @@ class ActionExtension extends \Twig_Extension {
 	 */
     public function getFilters() {
         return array(
-        	'number_actions' => new \Twig_Filter_Method($this, 'getNumberActions', array('is_safe' => array('html')))
+        	'number_actions' => new TwigFilter('get_number_actions', array($this, 'getNumberActions'), array('is_safe' => array('html')))
         );
     }
     
